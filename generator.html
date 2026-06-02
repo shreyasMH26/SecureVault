@@ -1,1 +1,93 @@
-<!DOCTYPE html><html><head><title>Generator</title><link rel='stylesheet' href='css/style.css'></head><body><h1>Password Generator</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Password Generator</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>🔐 SecureVault</h2>
+
+<a href="dashboard.html">Dashboard</a>
+<a href="users.html">Users</a>
+<a href="generator.html">Generator</a>
+<a href="settings.html">Settings</a>
+
+</div>
+
+<div class="main">
+
+<h1>Password Generator</h1>
+
+<div class="card">
+
+<label>Password Length</label>
+
+<input
+type="range"
+id="length"
+min="6"
+max="32"
+value="12"
+oninput="updateLength()"
+/>
+
+<p>
+Length:
+<span id="lengthValue">
+12
+</span>
+</p>
+
+<input
+type="text"
+id="password"
+readonly
+/>
+
+<div class="strength">
+
+<div id="strengthBar">
+
+</div>
+
+</div>
+
+<button onclick="generatePassword()">
+
+Generate Password
+
+</button>
+
+<button onclick="copyPassword()">
+
+Copy Password
+
+</button>
+
+<button onclick="togglePassword()">
+
+Show / Hide
+
+</button>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>

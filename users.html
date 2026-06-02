@@ -1,1 +1,100 @@
-<!DOCTYPE html><html><head><title>Users</title><link rel='stylesheet' href='css/style.css'></head><body><h1>User Management</h1><script src='js/users.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>User Management</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>🔐 SecureVault</h2>
+
+<a href="dashboard.html">Dashboard</a>
+<a href="users.html">Users</a>
+<a href="generator.html">Generator</a>
+<a href="settings.html">Settings</a>
+
+</div>
+
+<div class="main">
+
+<h1>User Management</h1>
+
+<div class="card">
+
+<input
+type="text"
+id="username"
+placeholder="Enter Username"
+/>
+
+<input
+type="email"
+id="email"
+placeholder="Enter Email"
+/>
+
+<button onclick="addUser()">
+Add User
+</button>
+
+</div>
+
+<div class="card">
+
+<input
+type="text"
+id="search"
+placeholder="Search User..."
+onkeyup="renderUsers()"
+/>
+
+</div>
+
+<div class="card">
+
+<table id="userTable">
+
+<thead>
+<tr>
+<th>User</th>
+<th>Email</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+<input
+type="file"
+onchange="importJSON(event)"
+><td>
+
+<div class="avatar">
+
+${user.username[0].toUpperCase()}
+
+</div>
+
+${user.username}
+
+</td>
+</body>
+
+</html>

@@ -1,1 +1,0 @@
-# SecureVault Portfolio Starter\nMulti-page starter package for GitHub Pages.

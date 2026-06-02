@@ -1,1 +1,0 @@
-function login(){localStorage.setItem('loggedIn','true');location='dashboard.html';}

@@ -1,1 +1,56 @@
-<!DOCTYPE html><html><head><title>SecureVault Login</title><link rel='stylesheet' href='css/style.css'></head><body><div class='glass auth'><h1>SecureVault</h1><input id='u' placeholder='Username'><input id='p' type='password' placeholder='Password'><button onclick='login()'>Login</button><a href='dashboard.html'>Demo Dashboard</a><script src='js/auth.js'></script></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecureVault Login</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔐 SecureVault</h1>
+
+<div class="card">
+
+<h2>Login</h2>
+
+<input
+type="text"
+id="username"
+placeholder="Username"
+/>
+
+<input
+type="password"
+id="password"
+placeholder="Password"
+/>
+
+<button onclick="login()">
+Login
+</button>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+<button onclick="exportCSV()">
+Export CSV<div class="card">
+
+<h2>Recent Activity</h2>
+
+<ul id="activityList"></ul>
+<input
+type="color"
+id="themeColor"
+onchange="changeAccent()"
+/>
+</div>
+</button>
+</body>
+</html>

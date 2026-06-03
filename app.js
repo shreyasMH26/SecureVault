@@ -755,4 +755,23 @@ document.documentElement
 savedAccent
 );
 
+}function addUser() {
+   
+}
+
+function saveUsers() {
+   const users = JSON.parse(localStorage.getItem("users") || "[]");
+}
+
+function renderUsers() {
+   const userList = document.getElementById("userList");
+   userList.innerHTML = "";
+
+   let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+   users.forEach(user => {
+       const li = document.createElement("li");
+       li.innerText = `${user.username} - ${user.email}`;
+       userList.appendChild(li);
+   });
 }

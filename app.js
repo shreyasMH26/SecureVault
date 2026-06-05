@@ -404,7 +404,84 @@ function togglePassword() {
             : "password";
 
 }
+// ==========================
+// PASSWORD STORAGE
+// ==========================
 
+let passwords =
+JSON.parse(
+localStorage.getItem(
+"passwords"
+)
+) || [];
+
+function savePassword(){
+
+const website =
+document
+.getElementById(
+"website"
+)
+.value;
+
+const category =
+document
+.getElementById(
+"category"
+)
+.value;
+
+const password =
+document
+.getElementById(
+"password"
+)
+.value;
+
+if(
+!website ||
+!password
+){
+
+alert(
+"Generate password first"
+);
+
+return;
+
+}
+
+passwords.push({
+
+id:Date.now(),
+
+website,
+
+category,
+
+password,
+
+created:
+new Date()
+.toLocaleString()
+
+});
+
+localStorage.setItem(
+
+"passwords",
+
+JSON.stringify(
+passwords
+)
+
+);
+
+alert(
+"Password Saved"
+);
+
+}
 // ==========================
 // DARK MODE
 // ==========================
@@ -500,9 +577,41 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        renderUsers();
+renderUsers();
 
-        updateDashboard();
+renderPasswords();
 
-    }
+updateDashboard();
+
+}
+
 );
+
+if(!list) return;
+
+list.innerHTML="";
+
+passwords.forEach(item=>{
+
+list.innerHTML += `
+
+<div class="password-card">
+
+<h3>
+${item.website}
+</h3>
+
+<p>
+${item.category}
+</p>
+
+<code>
+${item.password}
+</code>
+
+</div>
+
+`;
+
+});
+

@@ -475,4 +475,37 @@ transition:.3s ease;
         opacity:1;
         transform:scale(1);
     }
+}.password-card{
+
+padding:15px;
+
+margin-bottom:15px;
+
+border-radius:15px;
+
+background:rgba(
+255,
+255,
+255,
+0.05
+);
+
+backdrop-filter:
+blur(10px);
+}
+
+.password-card h3{
+
+margin:0 0 10px;
+}
+
+.password-card code{
+
+display:block;
+
+margin-top:10px;
+
+word-break:break-all;
+
+color:#38bdf8;
 }

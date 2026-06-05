@@ -1,264 +1,220 @@
-// AUTO LOGIN CHECK
+// ==========================
+// AUTH SYSTEM
+// ==========================
 
-if (
-window.location.pathname.includes(
-"dashboard.html"
-)
-) {
+if (window.location.pathname.includes("dashboard.html")) {
+    const loggedIn = localStorage.getItem("loggedIn");
 
-const loggedIn =
-localStorage.getItem(
-"loggedIn"
-);
-
-if (!loggedIn) {
-
-window.location.href =
-"index.html";
-
+    if (!loggedIn) {
+        window.location.href = "index.html";
+    }
 }
 
+if (window.location.pathname.includes("index.html")) {
+    const loggedIn = localStorage.getItem("loggedIn");
+
+    if (loggedIn) {
+        window.location.href = "dashboard.html";
+    }
 }
-
-// ALREADY LOGGED IN
-
-if (
-window.location.pathname.includes(
-"index.html"
-)
-) {
-
-const loggedIn =
-localStorage.getItem(
-"loggedIn"
-);
-
-if (loggedIn) {
-
-window.location.href =
-"dashboard.html";
-
-}
-
-}
-
-// LOGIN
 
 function login() {
 
-const username =
-document.getElementById(
-"username"
-).value;
+    const username =
+        document.getElementById("username")?.value;
 
-const password =
-document.getElementById(
-"password"
-).value;
+    const password =
+        document.getElementById("password")?.value;
 
-if (
-username === "admin"
-&&
-password === "admin123"
-) {
+    if (
+        username === "admin" &&
+        password === "admin123"
+    ) {
 
-localStorage.setItem(
-"loggedIn",
-"true"
-);
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
 
-window.location.href =
-"dashboard.html";
+        showToast("Login Successful");
 
-} else {
+        window.location.href =
+            "dashboard.html";
 
-alert(
-"Wrong username or password"
-);
+    } else {
 
-}
+        alert(
+            "Wrong Username or Password"
+        );
+
+    }
 
 }
-
-// LOGOUT
 
 function logout() {
 
-localStorage.removeItem(
-"loggedIn"
-);
+    localStorage.removeItem(
+        "loggedIn"
+    );
 
-window.location.href =
-"index.html";
-
-}
-function toggleSidebar(){
-
-document
-.getElementById("sidebar")
-.classList
-.toggle("active");
+    window.location.href =
+        "index.html";
 
 }
 
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
+// ==========================
+// USER DATABASE
+// ==========================
 
 let users =
-JSON.parse(
-localStorage.getItem(
-"users"
-)
-|| "[]"
-);
+    JSON.parse(
+        localStorage.getItem("users")
+    ) || [];
 
-document.getElementById(
-"userCount"
-).textContent =
-users.length;
+// SAVE USERS
 
-document.getElementById(
-"passwordCount"
-).textContent =
-users.length;
+function saveUsers() {
 
-});// USER DATABASE
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
 
-let users =
-JSON.parse(
-localStorage.getItem(
-"users"
-)
-|| "[]"
-);
+}
 
 // ADD USER
 
-function addUser(){
+function addUser() {
 
-const username =
-document.getElementById(
-"username"
-).value;
+    const username =
+        document.getElementById("username")
+        ?.value
+        .trim();
 
-const email =
-document.getElementById(
-"email"
-).value;
+    const email =
+        document.getElementById("email")
+        ?.value
+        .trim();
 
-if(
-!username ||
-!email
-){
-alert(
-"Fill all fields"
-);
-return;
-}
+    if (!username || !email) {
 
-users.push({
+        alert(
+            "Fill all fields"
+        );
 
-id:Date.now(),
+        return;
 
-username,
+    }
 
-email
+    users.push({
 
-});
+        id: Date.now(),
 
-saveUsers();
+        username,
 
-document.getElementById(
-"username"
-).value="";
+        email
 
-document.getElementById(
-"email"
-).value="";
+    });
 
-renderUsers();
+    saveUsers();
 
-}
+    document.getElementById(
+        "username"
+    ).value = "";
 
-// SAVE
+    document.getElementById(
+        "email"
+    ).value = "";
 
-function saveUsers(){
+    renderUsers();
 
-localStorage.setItem(
-"users",
-JSON.stringify(
-users
-)
-);
+    updateDashboard();
+
+    showToast(
+        "User Added"
+    );
 
 }
 
-// DELETE
+// DELETE USER
 
-function deleteUser(id){
+function deleteUser(id) {
 
-users =
-users.filter(
-user =>
-user.id !== id
-);
+    users =
+        users.filter(
+            user =>
+                user.id !== id
+        );
 
-saveUsers();
+    saveUsers();
 
-renderUsers();
+    renderUsers();
+
+    updateDashboard();
+
+    showToast(
+        "User Deleted"
+    );
 
 }
 
-// RENDER
+// SEARCH + RENDER USERS
 
-function renderUsers(){
+function renderUsers() {
 
-const tbody =
-document.querySelector(
-"#userTable tbody"
-);
+    const tbody =
+        document.querySelector(
+            "#userTable tbody"
+        );
 
-if(!tbody) return;
+    if (!tbody) return;
 
-const search =
-document
-.getElementById(
-"search"
-)
-.value
-.toLowerCase();
+    const searchInput =
+        document.getElementById(
+            "search"
+        );
 
-tbody.innerHTML="";
+    const search =
+        searchInput
+            ? searchInput.value.toLowerCase()
+            : "";
 
-users
-.filter(user =>
-user.username
-.toLowerCase()
-.includes(search)
-)
-.forEach(user=>{
+    tbody.innerHTML = "";
 
-tbody.innerHTML +=
-`
+    users
+        .filter(user =>
+            user.username
+                .toLowerCase()
+                .includes(search)
+        )
+        .forEach(user => {
+
+            tbody.innerHTML += `
 <tr>
 
 <td>
+
+<div class="avatar">
+
+${user.username.charAt(0).toUpperCase()}
+
+</div>
+
 ${user.username}
+
 </td>
 
 <td>
+
 ${user.email}
+
 </td>
 
 <td>
 
 <button
-onclick="
-deleteUser(
-${user.id}
-)
-">
+onclick="deleteUser(${user.id})"
+>
 
 Delete
 
@@ -269,509 +225,257 @@ Delete
 </tr>
 `;
 
-});
+        });
 
 }
 
-// AUTO LOAD
+// ==========================
+// DASHBOARD
+// ==========================
 
-document
-.addEventListener(
-"DOMContentLoaded",
-renderUsers
-);// PASSWORD GENERATOR
+function updateDashboard() {
 
-function updateLength(){
+    const userCount =
+        document.getElementById(
+            "userCount"
+        );
 
-const slider =
-document.getElementById(
-"length"
-);
+    if (userCount) {
 
-if(!slider) return;
+        userCount.textContent =
+            users.length;
 
-document.getElementById(
-"lengthValue"
-).textContent =
-slider.value;
+    }
 
 }
 
-function generatePassword(){
+// ==========================
+// PASSWORD GENERATOR
+// ==========================
 
-const chars =
+function updateLength() {
 
-"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+    const slider =
+        document.getElementById(
+            "length"
+        );
 
-const length =
+    const value =
+        document.getElementById(
+            "lengthValue"
+        );
 
-document.getElementById(
-"length"
-).value;
+    if (slider && value) {
 
-let password = "";
+        value.textContent =
+            slider.value;
 
-for(
-let i=0;
-i<length;
-i++
-){
-
-password +=
-chars.charAt(
-
-Math.floor(
-Math.random()
-* chars.length
-)
-
-);
+    }
 
 }
 
-document.getElementById(
-"password"
-).value =
-password;
+function generatePassword() {
 
-checkStrength(
-password
-);
+    const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
 
-}
+    const length =
+        document.getElementById(
+            "length"
+        )?.value || 12;
 
-// STRENGTH
+    let password = "";
 
-function checkStrength(
-password
-){
+    for (
+        let i = 0;
+        i < length;
+        i++
+    ) {
 
-const bar =
-document.getElementById(
-"strengthBar"
-);
+        password +=
+            chars.charAt(
+                Math.floor(
+                    Math.random()
+                    * chars.length
+                )
+            );
 
-bar.className = "";
+    }
 
-if(
-password.length < 8
-){
+    const input =
+        document.getElementById(
+            "password"
+        );
 
-bar.style.width =
-"30%";
+    if (input) {
 
-bar.classList.add(
-"weak"
-);
+        input.value =
+            password;
 
-}
-else if(
-password.length < 14
-){
+    }
 
-bar.style.width =
-"65%";
-
-bar.classList.add(
-"medium"
-);
-
-}
-else{
-
-bar.style.width =
-"100%";
-
-bar.classList.add(
-"strong"
-);
+    checkStrength(
+        password
+    );
 
 }
 
-}
+function checkStrength(password) {
 
-// COPY
+    const bar =
+        document.getElementById(
+            "strengthBar"
+        );
 
-function copyPassword(){
+    if (!bar) return;
 
-const password =
+    bar.className = "";
 
-document.getElementById(
-"password"
-);
+    if (
+        password.length < 8
+    ) {
 
-password.select();
+        bar.style.width =
+            "30%";
 
-navigator.clipboard
-.writeText(
-password.value
-);
+        bar.classList.add(
+            "weak"
+        );
 
-alert(
-"Password Copied"
-);
+    }
 
-}
+    else if (
+        password.length < 14
+    ) {
 
-// SHOW / HIDE
+        bar.style.width =
+            "65%";
 
-function togglePassword(){
+        bar.classList.add(
+            "medium"
+        );
 
-const password =
+    }
 
-document.getElementById(
-"password"
-);
+    else {
 
-if(
-password.type ===
-"text"
-){
+        bar.style.width =
+            "100%";
 
-password.type =
-"password";
+        bar.classList.add(
+            "strong"
+        );
 
-}else{
-
-password.type =
-"text";
-
-}
-
-}document.addEventListener("DOMContentLoaded", () => {
-
-const chart = document.getElementById("userChart");
-
-if(chart){
-
-let users = JSON.parse(
-localStorage.getItem("users")
-|| "[]"
-);
-
-new Chart(chart,{
-
-type:"doughnut",
-
-data:{
-labels:[
-"Users",
-"Remaining"
-],
-
-datasets:[{
-
-data:[
-users.length,
-100-users.length
-]
-
-}]
-}
-
-});
+    }
 
 }
 
-});function toggleTheme(){
+function copyPassword() {
 
-document.body.classList.toggle(
-"light-mode"
-);
+    const password =
+        document.getElementById(
+            "password"
+        );
 
-localStorage.setItem(
-"theme",
-document.body.classList.contains(
-"light-mode"
-)
-);
+    if (!password) return;
 
-}if(
-localStorage.getItem("theme")
-==="true"
-){
+    navigator.clipboard.writeText(
+        password.value
+    );
 
-document.body.classList.add(
-"light-mode"
-);
-
-}function exportJSON(){
-
-let users =
-localStorage.getItem(
-"users"
-);
-
-const blob =
-new Blob(
-[users],
-{
-type:"application/json"
-}
-);
-
-const a =
-document.createElement("a");
-
-a.href =
-URL.createObjectURL(blob);
-
-a.download =
-"users.json";
-
-a.click();
-
-showToast(
-"JSON Exported"
-);
-
-}function importJSON(event){
-
-const file =
-event.target.files[0];
-
-const reader =
-new FileReader();
-
-reader.onload =
-function(e){
-
-localStorage.setItem(
-"users",
-e.target.result
-);
-
-showToast(
-"Imported Successfully"
-);
-
-};
-
-reader.readAsText(file);
-
-}function exportCSV(){
-
-let users =
-JSON.parse(
-localStorage.getItem(
-"users"
-)
-|| "[]"
-);
-
-let csv =
-"Username,Email\n";
-
-users.forEach(user=>{
-
-csv +=
-`${user.username},
-${user.email}\n`;
-
-});
-
-const blob =
-new Blob(
-[csv],
-{
-type:"text/csv"
-}
-);
-
-const a =
-document.createElement("a");
-
-a.href =
-URL.createObjectURL(blob);
-
-a.download =
-"users.csv";
-
-a.click();
-
-showToast(
-"CSV Exported"
-);
-
-}function showToast(msg){
-
-const toast =
-document.createElement("div");
-
-toast.className =
-"toast";
-
-toast.innerText =
-msg;
-
-document.body.appendChild(
-toast
-);
-
-setTimeout(()=>{
-
-toast.remove();
-
-},3000);
-
-}if("serviceWorker" in navigator){
-
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-}logActivity(
-"User Added: " + username
-);logActivity(
-"User Deleted"
-);function logActivity(action){
-
-let logs =
-JSON.parse(
-localStorage.getItem(
-"logs"
-)
-|| "[]"
-);
-
-logs.push({
-
-action,
-
-time:new Date()
-.toLocaleString()
-
-});
-
-localStorage.setItem(
-"logs",
-JSON.stringify(logs)
-);
-
-}let logs =
-JSON.parse(
-localStorage.getItem(
-"logs"
-)
-|| "[]"
-);
-
-const list =
-document.getElementById(
-"activityList"
-);
-
-if(list){
-
-logs
-.slice(-5)
-.reverse()
-.forEach(log=>{
-
-list.innerHTML +=
-`
-<li>
-
-${log.action}
-
-<br>
-
-<small>
-
-${log.time}
-
-</small>
-
-</li>
-`;
-
-});
-
-}document.addEventListener(
-"keydown",
-e=>{
-
-if(
-e.ctrlKey &&
-e.key==="u"
-){
-
-window.location.href=
-"users.html";
+    showToast(
+        "Password Copied"
+    );
 
 }
 
-if(
-e.ctrlKey &&
-e.key==="g"
-){
+function togglePassword() {
 
-window.location.href=
-"generator.html";
+    const password =
+        document.getElementById(
+            "password"
+        );
 
-}
+    if (!password) return;
 
-if(
-e.ctrlKey &&
-e.key==="d"
-){
-
-window.location.href=
-"dashboard.html";
+    password.type =
+        password.type === "password"
+            ? "text"
+            : "password";
 
 }
 
+// ==========================
+// DARK MODE
+// ==========================
+
+function toggleTheme() {
+
+    document.body.classList.toggle(
+        "light-mode"
+    );
+
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains(
+            "light-mode"
+        )
+    );
+
 }
-);function changeAccent(){
 
-const color =
+if (
+    localStorage.getItem(
+        "theme"
+    ) === "true"
+) {
 
-document.getElementById(
-"themeColor"
-).value;
+    document.body.classList.add(
+        "light-mode"
+    );
 
-document.documentElement
-.style.setProperty(
-"--accent",
-color
+}
+
+// ==========================
+// TOAST
+// ==========================
+
+function showToast(msg) {
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+    toast.className =
+        "toast";
+
+    toast.innerText =
+        msg;
+
+    document.body.appendChild(
+        toast
+    );
+
+    setTimeout(() => {
+
+        toast.remove();
+
+    }, 3000);
+
+}
+
+// ==========================
+// PAGE LOAD
+// ==========================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        renderUsers();
+
+        updateDashboard();
+
+    }
 );
-
-localStorage.setItem(
-"accent",
-color
-);
-
-}const savedAccent =
-
-localStorage.getItem(
-"accent"
-);
-
-if(savedAccent){
-
-document.documentElement
-.style.setProperty(
-"--accent",
-savedAccent
-);
-
-}function addUser() {
-   
-}
-
-function saveUsers() {
-   const users = JSON.parse(localStorage.getItem("users") || "[]");
-}
-
-function renderUsers() {
-   const userList = document.getElementById("userList");
-   userList.innerHTML = "";
-
-   let users = JSON.parse(localStorage.getItem("users") || "[]");
-
-   users.forEach(user => {
-       const li = document.createElement("li");
-       li.innerText = `${user.username} - ${user.email}`;
-       userList.appendChild(li);
-   });
-}

@@ -1,56 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SecureVault Login</title>
+
+<title>SecureVault - Users</title>
 
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="sidebar">
 
-<h1>🔐 SecureVault</h1>
+    <h2>🔐 SecureVault</h2>
 
-<div class="card">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="users.html">👥 Users</a>
+    <a href="generator.html">🔑 Generator</a>
+    <a href="settings.html">⚙️ Settings</a>
 
-<h2>Login</h2>
-
-<input
-type="text"
-id="username"
-placeholder="Username"
-/>
-
-<input
-type="password"
-id="password"
-placeholder="Password"
-/>
-
-<button onclick="login()">
-Login
-</button>
+    <button onclick="logout()">
+        🚪 Logout
+    </button>
 
 </div>
+
+<div class="main">
+
+    <h1>User Management</h1>
+
+    <div class="card">
+
+        <h2>Add User</h2>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Username"
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+        >
+
+        <button onclick="addUser()">
+            ➕ Add User
+        </button>
+
+    </div>
+
+    <br>
+
+    <div class="card">
+
+        <input
+            type="text"
+            id="search"
+            placeholder="🔍 Search User"
+            onkeyup="renderUsers()"
+        >
+
+    </div>
+
+    <br>
+
+    <div class="card">
+
+        <table id="userTable">
+
+            <thead>
+
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- COMMAND PALETTE -->
+
+<div id="commandPalette" class="command-palette">
+
+    <div class="palette-box">
+
+        <input
+            type="text"
+            placeholder="Search Commands..."
+        >
+
+        <button onclick="navigatePage('dashboard.html')">
+            📊 Dashboard
+        </button>
+
+        <button onclick="navigatePage('users.html')">
+            👥 Users
+        </button>
+
+        <button onclick="navigatePage('generator.html')">
+            🔑 Generator
+        </button>
+
+        <button onclick="navigatePage('settings.html')">
+            ⚙️ Settings
+        </button>
+
+        <button onclick="logout()">
+            🚪 Logout
+        </button>
+
+        <button onclick="closePalette()">
+            ❌ Close
+        </button>
+
+    </div>
 
 </div>
 
 <script src="app.js"></script>
-<button onclick="exportCSV()">
-Export CSV<div class="card">
 
-<h2>Recent Activity</h2>
-
-<ul id="activityList"></ul>
-<input
-type="color"
-id="themeColor"
-onchange="changeAccent()"
-/>
-</div>
-</button>
 </body>
 </html>
+``

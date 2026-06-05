@@ -5,9 +5,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>User Management</title>
+<title>SecureVault - Users</title>
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+.avatar{
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:#38bdf8;
+
+    color:black;
+
+    display:inline-flex;
+
+    justify-content:center;
+    align-items:center;
+
+    font-weight:bold;
+
+    margin-right:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    padding:15px;
+    text-align:left;
+}
+
+tr{
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.actions button{
+    margin-right:8px;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -16,10 +60,25 @@
 
 <h2>🔐 SecureVault</h2>
 
-<a href="dashboard.html">Dashboard</a>
-<a href="users.html">Users</a>
-<a href="generator.html">Generator</a>
-<a href="settings.html">Settings</a>
+<a href="dashboard.html">
+📊 Dashboard
+</a>
+
+<a href="users.html">
+👥 Users
+</a>
+
+<a href="generator.html">
+🔑 Generator
+</a>
+
+<a href="settings.html">
+⚙️ Settings
+</a>
+
+<button onclick="logout()">
+🚪 Logout
+</button>
 
 </div>
 
@@ -29,45 +88,55 @@
 
 <div class="card">
 
+<h2>Add User</h2>
+
 <input
 type="text"
 id="username"
-placeholder="Enter Username"
+placeholder="Username"
 />
 
 <input
 type="email"
 id="email"
-placeholder="Enter Email"
+placeholder="Email"
 />
 
 <button onclick="addUser()">
-Add User
+➕ Add User
 </button>
 
 </div>
+
+<br>
 
 <div class="card">
 
 <input
 type="text"
 id="search"
-placeholder="Search User..."
+placeholder="🔍 Search User"
 onkeyup="renderUsers()"
 />
 
 </div>
+
+<br>
 
 <div class="card">
 
 <table id="userTable">
 
 <thead>
+
 <tr>
+
 <th>User</th>
 <th>Email</th>
-<th>Action</th>
+<th>Actions</th>
+
 </tr>
+
 </thead>
 
 <tbody>
@@ -81,20 +150,152 @@ onkeyup="renderUsers()"
 </div>
 
 <script src="app.js"></script>
-<input
-type="file"
-onchange="importJSON(event)"
-><td>
+
+<script>
+
+// EDIT USER
+
+function editUser(id){
+
+let users =
+JSON.parse(
+localStorage.getItem("users")
+) || [];
+
+const user =
+users.find(
+u => u.id === id
+);
+
+if(!user) return;
+
+const newUsername =
+prompt(
+"Edit Username",
+user.username
+);
+
+const newEmail =
+prompt(
+"Edit Email",
+user.email
+);
+
+if(
+newUsername &&
+newEmail
+){
+
+user.username =
+newUsername;
+
+user.email =
+newEmail;
+
+localStorage.setItem(
+"users",
+JSON.stringify(users)
+);
+
+renderUsers();
+
+}
+
+}
+
+// OVERRIDE TABLE RENDER
+
+function renderUsers(){
+
+let users =
+JSON.parse(
+localStorage.getItem("users")
+) || [];
+
+const tbody =
+document.querySelector(
+"#userTable tbody"
+);
+
+if(!tbody) return;
+
+const search =
+document
+.getElementById(
+"search"
+)
+.value
+.toLowerCase();
+
+tbody.innerHTML = "";
+
+users
+.filter(user =>
+user.username
+.toLowerCase()
+.includes(search)
+)
+.forEach(user => {
+
+tbody.innerHTML += `
+
+<tr>
+
+<td>
 
 <div class="avatar">
 
-${user.username[0].toUpperCase()}
+${user.username
+.charAt(0)
+.toUpperCase()}
 
 </div>
 
 ${user.username}
 
 </td>
+
+<td>
+
+${user.email}
+
+</td>
+
+<td class="actions">
+
+<button
+onclick="editUser(${user.id})"
+>
+
+✏️ Edit
+
+</button>
+
+<button
+onclick="deleteUser(${user.id})"
+>
+
+🗑 Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+document.addEventListener(
+"DOMContentLoaded",
+renderUsers
+);
+
+</script>
+
 </body>
 
 </html>

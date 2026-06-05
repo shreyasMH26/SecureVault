@@ -465,6 +465,33 @@ function showToast(msg) {
 
 }
 
+document.addEventListener("keydown",(e)=>{
+
+if(e.ctrlKey && e.key==="k"){
+
+e.preventDefault();
+
+document
+.getElementById("commandPalette")
+.style.display="flex";
+
+}
+
+});
+
+function closePalette(){
+
+document
+.getElementById("commandPalette")
+.style.display="none";
+
+}
+
+function navigatePage(page){
+
+window.location.href=page;
+
+}
 // ==========================
 // PAGE LOAD
 // ==========================

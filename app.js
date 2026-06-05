@@ -568,50 +568,53 @@ function navigatePage(page){
 
 window.location.href=page;
 
+}// ==========================
+// PASSWORD RENDER
+// ==========================
+
+function renderPasswords(){
+
+    const list =
+    document.getElementById(
+        "passwordList"
+    );
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    passwords.forEach(item=>{
+
+        list.innerHTML += `
+
+        <div class="password-card">
+
+            <h3>${item.website}</h3>
+
+            <p>${item.category}</p>
+
+            <code>${item.password}</code>
+
+        </div>
+
+        `;
+
+    });
+
 }
 // ==========================
 // PAGE LOAD
 // ==========================
 
 document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+"DOMContentLoaded",
+()=>{
 
-renderUsers();
+    renderUsers();
 
-renderPasswords();
+    renderPasswords();
 
-updateDashboard();
+    updateDashboard();
 
 }
-
 );
-
-if(!list) return;
-
-list.innerHTML="";
-
-passwords.forEach(item=>{
-
-list.innerHTML += `
-
-<div class="password-card">
-
-<h3>
-${item.website}
-</h3>
-
-<p>
-${item.category}
-</p>
-
-<code>
-${item.password}
-</code>
-
-</div>
-
-`;
-
-});
-

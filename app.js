@@ -253,155 +253,69 @@ function updateDashboard() {
 // PASSWORD GENERATOR
 // ==========================
 
-function updateLength() {
-
-    const slider =
-        document.getElementById(
-            "length"
-        );
-
-    const value =
-        document.getElementById(
-            "lengthValue"
-        );
-
-    if (slider && value) {
-
-        value.textContent =
-            slider.value;
-
-    }
-
-}
-
 function generatePassword() {
 
     const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
 
     const length =
-        document.getElementById(
-            "length"
-        )?.value || 12;
+    document.getElementById("length")?.value || 12;
 
     let password = "";
 
-    for (
-        let i = 0;
-        i < length;
-        i++
-    ) {
+    for(let i = 0; i < length; i++) {
 
-        password +=
-            chars.charAt(
-                Math.floor(
-                    Math.random()
-                    * chars.length
-                )
-            );
-
-    }
-
-    const input =
-        document.getElementById(
-            "password"
-        );
-
-    if (input) {
-
-        input.value =
-            password;
-
-    }
-
-    checkStrength(
-        password
-    );
-
-}
-
-function checkStrength(password) {
-
-    const bar =
-        document.getElementById(
-            "strengthBar"
-        );
-
-    if (!bar) return;
-
-    bar.className = "";
-
-    if (
-        password.length < 8
-    ) {
-
-        bar.style.width =
-            "30%";
-
-        bar.classList.add(
-            "weak"
+        password += chars.charAt(
+            Math.floor(
+                Math.random() * chars.length
+            )
         );
 
     }
 
-    else if (
-        password.length < 14
-    ) {
-
-        bar.style.width =
-            "65%";
-
-        bar.classList.add(
-            "medium"
-        );
-
-    }
-
-    else {
-
-        bar.style.width =
-            "100%";
-
-        bar.classList.add(
-            "strong"
-        );
-
-    }
+    document.getElementById(
+        "password"
+    ).value = password;
 
 }
 
 function copyPassword() {
 
     const password =
-        document.getElementById(
-            "password"
-        );
-
-    if (!password) return;
+    document.getElementById(
+        "password"
+    );
 
     navigator.clipboard.writeText(
         password.value
     );
 
-    showToast(
-        "Password Copied"
-    );
+    alert("Password Copied");
 
 }
-
 function togglePassword() {
 
-    const password =
-        document.getElementById(
-            "password"
-        );
+    const input =
+    document.getElementById(
+        "password"
+    );
 
-    if (!password) return;
+    if(!input) return;
 
-    password.type =
-        password.type === "password"
-            ? "text"
-            : "password";
+    input.type =
+    input.type === "password"
+    ? "text"
+    : "password";
+
+}
+function updateLength() {
+
+    document.getElementById(
+        "lengthValue"
+    ).innerText =
+    document.getElementById(
+        "length"
+    ).value;
 
 }
 // ==========================
